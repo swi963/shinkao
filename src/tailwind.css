@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background-color: #f8fafc;
+  }
+
+  /* ── Dark mode structural overrides ── */
+  html.dark body {
+    background: #0f172a;
+    background-image: none;
+    color: #e2e8f0;
+  }
+
+  html.dark aside {
+    background-color: #1e2535;
+    border-right-color: #334155;
+  }
+
+  html.dark header {
+    background-color: rgba(15, 23, 42, 0.9);
+    border-bottom-color: #334155;
+  }
+
+  html.dark .bg-brand-lightest {
+    background-color: #162032;
+  }
+
+  /* Sidebar navigation */
+  html.dark .nav-group-title {
+    color: #475569;
+  }
+  html.dark .sidebar-item {
+    color: #94a3b8;
+  }
+  html.dark .sidebar-item:hover {
+    background-color: #1e3254;
+    color: #7aa5f0;
+  }
+  html.dark .sidebar-item.active,
+  html.dark .sidebar-link.active {
+    background-color: #1e3254;
+    color: #7aa5f0;
+  }
+
+  /* Form inputs */
+  html.dark .form-input {
+    background-color: #1e293b;
+    border-color: #334155;
+    color: #e2e8f0;
+  }
+  html.dark .form-input:focus {
+    border-color: #4a7de8;
+  }
+
+  /* Type cards */
+  html.dark .type-card {
+    border-color: #334155;
+    background-color: #1e293b;
+    color: #e2e8f0;
+  }
+  html.dark .type-card:hover {
+    border-color: #4a7de8;
+    background-color: #1e3254;
+  }
+  html.dark .type-card.selected {
+    border-color: #3969e1;
+    background-color: #1e3254;
+    color: #79a4ef;
+  }
+
+  /* Type card text/icon colours */
+  html.dark .type-card i,
+  html.dark .type-card p { color: inherit; }
+  html.dark .type-card.selected,
+  html.dark .type-card.selected i,
+  html.dark .type-card.selected p { color: #79a4ef; }
+
+  /* Service cards */
+  html.dark .service-card {
+    background-color: #1e293b;
+    border-color: #334155;
+  }
+
+  /* Top tab buttons */
+  html.dark .top-tab-btn {
+    border-color: #334155;
+    color: #94a3b8;
+    background: #1e293b;
+  }
+  html.dark .top-tab-btn:hover {
+    border-color: #4a7de8;
+    color: #7aa5f0;
+    background: #1e3254;
+  }
+  html.dark .top-tab-btn.active {
+    border-color: #3969e1;
+    color: #7aa5f0;
+    background: #1e3254;
+  }
+
+  /* Mobile nav parent button */
+  html.dark .mobile-parent-btn {
+    color: #94a3b8;
+  }
+  html.dark .mobile-parent-btn:hover {
+    background: #1e293b;
+  }
+
+  /* Loader spinner */
+  html.dark .loader {
+    border-color: #334155;
+    border-top-color: #4a7de8;
+  }
+
+  /* ── Tailwind utility class overrides in dark mode ── */
+  html.dark .bg-white {
+    background-color: #1e293b;
+  }
+  html.dark .bg-white\/80 {
+    background-color: rgba(30, 41, 59, 0.9);
+  }
+  html.dark .bg-slate-50\/50 {
+    background-color: #162032;
+  }
+  html.dark .bg-slate-50 {
+    background-color: #162032;
+  }
+
+  html.dark .border-slate-200 {
+    border-color: #334155;
+  }
+  html.dark .border-slate-100 {
+    border-color: #263144;
+  }
+
+  html.dark .text-slate-900 { color: #f1f5f9; }
+  html.dark .text-slate-800 { color: #f1f5f9; }
+  html.dark .text-slate-700 { color: #cbd5e1; }
+  html.dark .text-slate-600 { color: #94a3b8; }
+  html.dark .text-slate-500 { color: #64748b; }
+
+  /* Dark mode toggle button hover */
+  html.dark #dark-mode-toggle {
+    color: #94a3b8;
+  }
+  html.dark #dark-mode-toggle:hover {
+    background-color: #1e293b;
+  }
+
+  /* Mobile nav groups */
+  html.dark .border-slate-200.rounded-2xl {
+    border-color: #334155;
+  }
+}

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 拍照報度 - 欣高瓦斯</title>
+    <script>(function(){var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark');})()</script>
+    <link rel="stylesheet" href="./assets/tailwind.css">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@1.14.0/dist/umd/lucide.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        .sidebar-item { transition: all 0.2s; border-radius: 0.75rem; }
+        .sidebar-item:hover { background-color: #DBEAFE; color: #2563EB; }
+        .sidebar-link { display: flex; }
+        .sidebar-link.active { background-color: #DBEAFE; color: #2563EB; font-weight: 600; }
+        .nav-group-title { font-size: 0.75rem; font-weight: 700; color: #A0A0A0; text-transform: uppercase; letter-spacing: 0.05em; padding: 1.5rem 1rem 0.5rem; }
+        .form-input { width: 100%; border: 2px solid #E7E7E7; border-radius: 0.75rem; padding: 0.75rem 1rem; outline: none; transition: border-color 0.2s; }
+        .form-input:focus { border-color: #2563EB; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .loader { border: 3px solid #F3F3F3; border-top: 3px solid #2563EB; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="flex min-h-screen text-slate-900">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out overflow-y-auto no-scrollbar">
+        <div class="flex flex-col h-full">
+            <nav class="flex-1 px-4 pt-6 pb-8">
+                <p class="nav-group-title">用戶服務</p>
+                <a href="index.html" class="sidebar-link sidebar-item items-center gap-3 px-4 py-2.5 text-slate-600" data-href="index.html"><i data-lucide="home" class="w-5 h-5"></i> 服務首頁</a>
+                <a href="report.html" class="sidebar-link sidebar-item items-center gap-3 px-4 py-2.5 text-slate-600" data-href="report.html"><i data-lucide="camera" class="w-5 h-5"></i> AI 拍照報度</a>
+                <p class="nav-group-title">業務申請</p>
+                <a href="safety-booking.html" class="sidebar-link sidebar-item items-center gap-3 px-4 py-2.5 text-slate-600" data-href="safety-booking.html"><i data-lucide="calendar-check" class="w-5 h-5"></i> 預約安全檢查</a>
+                <a href="meter-apply.html" class="sidebar-link sidebar-item items-center gap-3 px-4 py-2.5 text-slate-600" data-href="meter-apply.html"><i data-lucide="gauge" class="w-5 h-5"></i> 計量表業務申請</a>
+                <p class="nav-group-title">帳務與公告</p>
+                <a href="payment.html" class="sidebar-link sidebar-item items-center gap-3 px-4 py-2.5 text-slate-600" data-href="payment.html"><i data-lucide="credit-card" class="w-5 h-5"></i> 繳費專區</a>
+            </nav>
+        </div>
+    </aside>
+    <div class="flex-1 lg:ml-72 flex flex-col min-h-screen">
+        <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <button id="menu-toggle" class="lg:hidden p-2.5 text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-xl transition-colors flex items-center justify-center"><i data-lucide="menu" class="w-6 h-6"></i></button>
+                <a href="index.html" class="text-xl font-bold text-slate-800 hover:text-blue-700 transition-colors">欣高瓦斯</a>
+            </div>
+            <button id="dark-mode-toggle" onclick="toggleDarkMode()" class="p-2.5 text-slate-600 hover:bg-slate-100 rounded-xl transition-colors flex items-center justify-center" title="切換顯示模式">
+                <i id="dark-mode-icon" data-lucide="moon" class="w-5 h-5"></i>
+            </button>
+        </header>
+        <div class="flex-1 p-6 lg:p-8 max-w-4xl mx-auto w-full space-y-6">
+            <div id="report-upload-ui" class="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-8 border-b border-slate-100 bg-slate-50/50">
+                    <h3 class="text-2xl font-black text-slate-800 flex items-center gap-3"><i data-lucide="camera" class="w-7 h-7 text-blue-600"></i> AI 照片報度</h3>
+                    <p class="text-slate-500 mt-2">請上傳瓦斯表照片，AI 將自動辨識數字區</p>
+                    <div class="mt-4 flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-2xl px-4 py-3">
+                        <i data-lucide="triangle-alert" class="w-5 h-5 text-amber-500 shrink-0 mt-0.5"></i>
+                        <p class="text-sm text-amber-800 font-medium">目前 AI 辨識免費配額已達上限，請直接點選「<span class="font-bold">略過辨識，手動輸入</span>」按鈕填寫度數。</p>
+                    </div>
+                </div>
+                <div class="p-8 space-y-6 text-center">
+                    <div id="drop-zone" class="border-4 border-dashed border-slate-200 rounded-[2rem] p-12 hover:border-blue-200 hover:bg-blue-50 transition-all group cursor-pointer" onclick="document.getElementById('file-input').click()">
+                        <input type="file" id="file-input" class="hidden" accept="image/*">
+                        <div id="preview-container" class="hidden mb-6">
+                            <img id="image-preview" class="max-h-64 mx-auto rounded-xl shadow-lg border-4 border-white">
+                        </div>
+                        <div id="upload-prompt">
+                            <i data-lucide="image-plus" class="w-16 h-16 text-slate-300 mx-auto mb-4 group-hover:text-blue-500 transition-colors"></i>
+                            <p class="text-slate-500 font-bold text-lg">點擊此處或拖曳照片上傳</p>
+                            <p class="text-slate-400 text-sm mt-1">支援 JPG, PNG 格式</p>
+                        </div>
+                    </div>
+                    <div id="analysis-status" class="hidden flex items-center justify-center gap-3 p-4 bg-blue-50 rounded-2xl text-blue-700 font-bold">
+                        <div class="loader"></div> 正在利用 AI 辨識度數中...
+                    </div>
+                    <button id="start-analysis-btn" class="hidden w-full bg-brand-primary text-white py-5 rounded-2xl font-bold text-lg shadow-xl shadow-blue-100 disabled:opacity-50" onclick="analyzeImage()">開始辨識度數</button>
+                    <button onclick="showResult('')" class="w-full border-2 border-slate-200 text-slate-600 py-4 rounded-2xl font-bold text-base hover:border-blue-200 hover:text-blue-600 transition-colors flex items-center justify-center gap-2">
+                        <i data-lucide="pencil" class="w-5 h-5"></i> 略過辨識，手動輸入度數
+                    </button>
+                </div>
+            </div>
+            <div id="report-confirm-ui" class="hidden bg-white rounded-[2.5rem] border border-slate-200 shadow-sm p-8 space-y-6">
+                <div class="flex items-center gap-4 border-b border-slate-100 pb-6">
+                    <div class="w-12 h-12 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center"><i data-lucide="check-circle" class="w-6 h-6"></i></div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800">辨識結果確認</h3>
+                        <p class="text-sm text-slate-500">若辨識有誤請手動修正</p>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="bg-slate-50 p-6 rounded-3xl border border-slate-100">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">辨識到的度數</p>
+                        <input type="text" id="detected-meter" class="text-4xl font-black text-slate-900 font-mono bg-transparent border-none outline-none w-full" placeholder="請輸入度數">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div><label class="block text-xs font-bold text-slate-400 mb-2 uppercase">用戶編號</label><input type="text" class="form-input" placeholder="請輸入用戶編號"></div>
+                        <div><label class="block text-xs font-bold text-slate-400 mb-2 uppercase">報度日期</label><input type="date" class="form-input"></div>
+                    </div>
+                    <button onclick="submitReport()" class="w-full bg-brand-primary text-white py-5 rounded-2xl font-bold text-lg shadow-xl">確認並送出</button>
+                </div>
+            </div>
+            <div id="report-success-msg" class="hidden p-8 bg-green-50 border border-green-100 rounded-[2rem] text-center space-y-3">
+                <i data-lucide="circle-check-big" class="w-12 h-12 text-green-600 mx-auto"></i>
+                <h4 class="text-xl font-bold text-green-800">度數申報成功！</h4>
+                <p class="text-green-600">我們已收到您的回報，系統將進行複核。</p>
+                <a href="index.html" class="mt-4 inline-block text-green-700 font-bold underline">返回首頁</a>
+            </div>
+        </div>
+        <footer class="bg-slate-800 text-slate-300 mt-auto">
+            <div class="max-w-5xl mx-auto px-8 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="space-y-3">
+                    <div class="flex items-center gap-2 mb-4"><div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center"><i data-lucide="flame" class="w-4 h-4 text-white"></i></div><span class="text-white font-semibold text-lg">欣高石油氣股份有限公司</span></div>
+                    <p class="text-sm text-slate-400 leading-relaxed flex items-start gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-slate-500 shrink-0 mt-0.5"></i>高雄市苓雅區民權一路 12 號</p>
+                    <p class="text-sm text-slate-400 flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4 text-slate-500 shrink-0"></i>07-531-5701（15線）</p>
+                    <p class="text-sm text-slate-400 flex items-start gap-2"><i data-lucide="clock" class="w-4 h-4 text-slate-500 shrink-0 mt-0.5"></i>週一至週五　08:15 – 17:20</p>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-white font-semibold text-base mb-4 uppercase tracking-wider">服務分機</h4>
+                    <div class="space-y-2.5 text-sm text-slate-400">
+                        <div class="flex items-center gap-2"><span class="bg-red-500/20 text-red-300 px-2 py-0.5 rounded font-medium text-xs">637</span>漏氣維修、安全檢查</div>
+                        <div class="flex items-center gap-2"><span class="bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded font-medium text-xs">809 / 805</span>自報度數、氣費查詢</div>
+                        <div class="flex items-center gap-2"><span class="bg-green-500/20 text-green-300 px-2 py-0.5 rounded font-medium text-xs">716 / 718</span>設計施工進度查詢</div>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-white font-semibold text-base mb-4 uppercase tracking-wider">緊急聯絡</h4>
+                    <div class="bg-red-500/10 border border-red-500/20 rounded-xl p-4 space-y-1">
+                        <p class="text-red-300 text-sm font-medium flex items-center gap-2"><i data-lucide="alert-triangle" class="w-4 h-4"></i> 瓦斯漏氣緊急處理</p>
+                        <p class="text-white font-semibold text-xl tracking-wider">07-531-5701</p>
+                        <p class="text-slate-500 text-xs">立即關閉總開關，打開窗戶，禁止使用明火</p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-slate-700 px-8 py-4"><p class="text-center text-slate-500 text-sm font-normal">&copy; 2005 SHIN-KAO Gas Co., LTD. All Rights Reserved.　|　欣高石油氣股份有限公司 版權所有</p></div>
+        </footer>
+    </div>
+    <div id="overlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 hidden"></div>
+    <script src="shared.js"></script>
+    <script>
+        const apiKey = "AIzaSyDE_a9CCcas1HVDA7--bllTH379zrPXCis";
+        const fileInput = document.getElementById('file-input');
+        const imagePreview = document.getElementById('image-preview');
+
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                imagePreview.src = event.target.result;
+                document.getElementById('preview-container').classList.remove('hidden');
+                document.getElementById('upload-prompt').classList.add('hidden');
+                document.getElementById('start-analysis-btn').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        async function analyzeImage() {
+            const status = document.getElementById('analysis-status');
+            const startBtn = document.getElementById('start-analysis-btn');
+            if (!apiKey) { alert('尚未設定 Gemini API Key。'); return; }
+            status.classList.remove('hidden');
+            startBtn.classList.add('hidden');
+            const srcHeader = imagePreview.src.split(';')[0];
+            const mimeType = srcHeader.startsWith('data:') ? srcHeader.slice(5) : 'image/jpeg';
+            const base64Data = imagePreview.src.split(',')[1];
+            const prompt = "這是一張瓦斯表的照片，請幫我辨識出上面的度數（黑色數字部分）。請只回傳數字，包含小數點，例如 0842.5。若有多組數字請取主要計量數值。如果完全無法辨識，請回傳 UNKNOWN";
+            let retries = 0;
+            async function callGemini() {
+                try {
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }, { inlineData: { mimeType, data: base64Data } }] }], generationConfig: { temperature: 0.1, maxOutputTokens: 64 } })
+                    });
+                    if (!response.ok) {
+                        const err = await response.json();
+                        if (response.status === 429) {
+                            status.innerHTML = '<span class="text-amber-600">API 免費配額已用盡，請改為手動輸入度數。</span>';
+                            setTimeout(() => showResult(''), 2500); return;
+                        }
+                        throw new Error(err.error?.message || `HTTP ${response.status}`);
+                    }
+                    const result = await response.json();
+                    const text = result.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+                    if (text && text !== 'UNKNOWN') { showResult(text); }
+                    else if (text === 'UNKNOWN') { status.innerHTML = '<span class="text-amber-600">AI 無法辨識，已切換為手動輸入。</span>'; setTimeout(() => showResult(''), 1500); }
+                    else throw new Error('No text returned');
+                } catch (error) {
+                    if (retries < 3) { retries++; status.innerHTML = `<span>辨識中，第 ${retries} 次重試...</span>`; setTimeout(callGemini, Math.pow(2, retries) * 600); }
+                    else { status.innerHTML = `<span class="text-red-600">辨識失敗：${error.message}</span>`; setTimeout(() => showResult(''), 2000); }
+                }
+            }
+            callGemini();
+        }
+
+        function showResult(val) {
+            document.getElementById('analysis-status').classList.add('hidden');
+            document.getElementById('report-upload-ui').classList.add('hidden');
+            document.getElementById('report-confirm-ui').classList.remove('hidden');
+            document.getElementById('detected-meter').value = val;
+            // 自動填入今天日期
+            document.querySelector('input[type="date"]').value = new Date().toISOString().split('T')[0];
+            initIcons();
+        }
+
+        function submitReport() {
+            document.getElementById('report-confirm-ui').classList.add('hidden');
+            document.getElementById('report-success-msg').classList.remove('hidden');
+            initIcons();
+        }
+    </script>
+</body>
+</html>

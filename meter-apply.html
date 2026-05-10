@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>計量表業務申請 - 欣高瓦斯</title>
+    <script>(function(){var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark');})()</script>
+    <link rel="stylesheet" href="./assets/tailwind.css">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@1.14.0/dist/umd/lucide.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        .sidebar-item { transition: all 0.2s; border-radius: 0.75rem; }
+        .sidebar-item:hover { background-color: #DBEAFE; color: #2563EB; }
+        .sidebar-link { display: flex; }
+        .sidebar-link.active { background-color: #DBEAFE; color: #2563EB; font-weight: 600; }
+        .nav-group-title { font-size: 0.75rem; font-weight: 700; color: #A0A0A0; text-transform: uppercase; letter-spacing: 0.05em; padding: 1.5rem 1rem 0.5rem; }
+        .form-input { width: 100%; border: 2px solid #E7E7E7; border-radius: 0.75rem; padding: 0.75rem 1rem; outline: none; transition: border-color 0.2s; }
+        .form-input:focus { border-color: #2563EB; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .type-card { border: 2px solid #E7E7E7; transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease; cursor: pointer; border-radius: 1rem; color: #A0A0A0; }
+        .type-card:hover { border-color: #BFDBFE; background-color: #DBEAFE; }
+        .type-card.selected { border-color: #2563EB; background-color: #DBEAFE; color: #2563EB; }
+    </style>
+</head>
+<body class="flex min-h-screen text-slate-900">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out overflow-y-auto no-scrollbar">
+        <div class="flex flex-col h-full">
+            <nav class="flex-1 px-4 pt-6 pb-8">
+                <p class="nav-group-title">用戶服務</p>
+                <a href="index.html" class="sidebar-link sidebar-item items-center gap-3 px-4 py-2.5 text-slate-600" data-href="index.html"><i data-lucide="home" class="w-5 h-5"></i> 服務首頁</a>
+                <a href="report.html" class="sidebar-link sidebar-item items-center gap-3 px-4 py-2.5 text-slate-600" data-href="report.html"><i data-lucide="camera" class="w-5 h-5"></i> AI 拍照報度</a>
+                <p class="nav-group-title">業務申請</p>
+                <a href="safety-booking.html" class="sidebar-link sidebar-item items-center gap-3 px-4 py-2.5 text-slate-600" data-href="safety-booking.html"><i data-lucide="calendar-check" class="w-5 h-5"></i> 預約安全檢查</a>
+                <a href="meter-apply.html" class="sidebar-link sidebar-item items-center gap-3 px-4 py-2.5 text-slate-600" data-href="meter-apply.html"><i data-lucide="gauge" class="w-5 h-5"></i> 計量表業務申請</a>
+                <p class="nav-group-title">帳務與公告</p>
+                <a href="payment.html" class="sidebar-link sidebar-item items-center gap-3 px-4 py-2.5 text-slate-600" data-href="payment.html"><i data-lucide="credit-card" class="w-5 h-5"></i> 繳費專區</a>
+            </nav>
+        </div>
+    </aside>
+    <div class="flex-1 lg:ml-72 flex flex-col min-h-screen">
+        <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <button id="menu-toggle" class="lg:hidden p-2.5 text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-xl transition-colors flex items-center justify-center"><i data-lucide="menu" class="w-6 h-6"></i></button>
+                <a href="index.html" class="text-xl font-bold text-slate-800 hover:text-blue-700 transition-colors">欣高瓦斯</a>
+            </div>
+            <button id="dark-mode-toggle" onclick="toggleDarkMode()" class="p-2.5 text-slate-600 hover:bg-slate-100 rounded-xl transition-colors flex items-center justify-center" title="切換顯示模式">
+                <i id="dark-mode-icon" data-lucide="moon" class="w-5 h-5"></i>
+            </button>
+        </header>
+        <div class="flex-1 p-6 lg:p-8 max-w-3xl mx-auto w-full space-y-6">
+            <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-8 border-b border-slate-100 bg-slate-50/50">
+                    <h3 class="text-2xl font-black text-slate-800 flex items-center gap-3"><i data-lucide="gauge" class="w-7 h-7 text-orange-500"></i> 計量表業務申請</h3>
+                    <p class="text-slate-500 mt-2">請選擇申請類型並填寫基本資料</p>
+                </div>
+                <div id="meter-apply-form" class="p-8 space-y-6">
+                    <div>
+                        <p class="text-xs font-bold text-slate-400 mb-3 uppercase">申請類型</p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <div class="type-card p-4 text-center" id="meter-type-new" onclick="selectMeterType('new')">
+                                <i data-lucide="plus-circle" class="w-7 h-7 text-blue-600 mx-auto mb-2"></i>
+                                <p class="text-sm font-bold text-slate-700">新設</p>
+                            </div>
+                            <div class="type-card p-4 text-center" id="meter-type-replace" onclick="selectMeterType('replace')">
+                                <i data-lucide="refresh-cw" class="w-7 h-7 text-green-600 mx-auto mb-2"></i>
+                                <p class="text-sm font-bold text-slate-700">換裝</p>
+                            </div>
+                            <div class="type-card p-4 text-center" id="meter-type-move" onclick="selectMeterType('move')">
+                                <i data-lucide="move" class="w-7 h-7 text-purple-600 mx-auto mb-2"></i>
+                                <p class="text-sm font-bold text-slate-700">移位</p>
+                            </div>
+                            <div class="type-card p-4 text-center" id="meter-type-remove" onclick="selectMeterType('remove')">
+                                <i data-lucide="trash-2" class="w-7 h-7 text-red-500 mx-auto mb-2"></i>
+                                <p class="text-sm font-bold text-slate-700">拆除</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 mb-2 uppercase">用戶編號</label>
+                            <input type="text" class="form-input" placeholder="請輸入用戶編號">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 mb-2 uppercase">申請人姓名</label>
+                            <input type="text" class="form-input" placeholder="請輸入姓名">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 mb-2 uppercase">聯絡電話</label>
+                        <input type="tel" class="form-input" placeholder="請輸入聯絡電話">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 mb-2 uppercase">用氣地址</label>
+                        <input type="text" class="form-input" placeholder="請輸入完整地址（含棟層室）">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 mb-2 uppercase">說明與備註</label>
+                        <textarea class="form-input h-28 resize-none" placeholder="請描述您的需求或特殊狀況（選填）"></textarea>
+                    </div>
+                    <div class="flex items-center gap-[10px]">
+                        <button onclick="simulateAction('meter-apply-success')" class="flex-1 bg-orange-500 text-white px-[18px] py-3 rounded-xl font-semibold text-base hover:bg-orange-600 transition-colors flex items-center justify-center gap-[6px]">
+                            <i data-lucide="send" class="w-5 h-5"></i> 送出申請
+                        </button>
+                        <button type="button" onclick="resetForm('meter-apply-form')" class="flex-1 bg-white text-slate-700 px-[18px] py-3 rounded-xl font-semibold text-base border border-slate-300 hover:bg-slate-50 transition-colors flex items-center justify-center gap-[6px]">
+                            <i data-lucide="rotate-ccw" class="w-5 h-5"></i> 清除表單
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="meter-apply-success" class="hidden p-8 bg-green-50 border border-green-100 rounded-[2rem] text-center space-y-3">
+                <i data-lucide="circle-check-big" class="w-12 h-12 text-green-600 mx-auto"></i>
+                <h4 class="text-xl font-bold text-green-800">申請已送出！</h4>
+                <p class="text-green-600">我們已收到您的計量表業務申請，將於 3 個工作日內與您聯繫。</p>
+                <a href="index.html" class="mt-4 inline-block text-green-700 font-bold underline">返回首頁</a>
+            </div>
+        </div>
+        <footer class="bg-slate-800 text-slate-300 mt-auto">
+            <div class="max-w-5xl mx-auto px-8 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="space-y-3">
+                    <div class="flex items-center gap-2 mb-4"><div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center"><i data-lucide="flame" class="w-4 h-4 text-white"></i></div><span class="text-white font-semibold text-lg">欣高石油氣股份有限公司</span></div>
+                    <p class="text-sm text-slate-400 leading-relaxed flex items-start gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-slate-500 shrink-0 mt-0.5"></i>高雄市苓雅區民權一路 12 號</p>
+                    <p class="text-sm text-slate-400 flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4 text-slate-500 shrink-0"></i>07-531-5701（15線）</p>
+                    <p class="text-sm text-slate-400 flex items-start gap-2"><i data-lucide="clock" class="w-4 h-4 text-slate-500 shrink-0 mt-0.5"></i>週一至週五　08:15 – 17:20</p>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-white font-semibold text-base mb-4 uppercase tracking-wider">服務分機</h4>
+                    <div class="space-y-2.5 text-sm text-slate-400">
+                        <div class="flex items-center gap-2"><span class="bg-red-500/20 text-red-300 px-2 py-0.5 rounded font-medium text-xs">637</span>漏氣維修、安全檢查</div>
+                        <div class="flex items-center gap-2"><span class="bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded font-medium text-xs">809 / 805</span>自報度數、氣費查詢</div>
+                        <div class="flex items-center gap-2"><span class="bg-green-500/20 text-green-300 px-2 py-0.5 rounded font-medium text-xs">716 / 718</span>設計施工進度查詢</div>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-white font-semibold text-base mb-4 uppercase tracking-wider">緊急聯絡</h4>
+                    <div class="bg-red-500/10 border border-red-500/20 rounded-xl p-4 space-y-1">
+                        <p class="text-red-300 text-sm font-medium flex items-center gap-2"><i data-lucide="alert-triangle" class="w-4 h-4"></i> 瓦斯漏氣緊急處理</p>
+                        <p class="text-white font-semibold text-xl tracking-wider">07-531-5701</p>
+                        <p class="text-slate-500 text-xs">立即關閉總開關，打開窗戶，禁止使用明火</p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-slate-700 px-8 py-4"><p class="text-center text-slate-500 text-sm font-normal">&copy; 2005 SHIN-KAO Gas Co., LTD. All Rights Reserved.　|　欣高石油氣股份有限公司 版權所有</p></div>
+        </footer>
+    </div>
+    <div id="overlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 hidden"></div>
+    <script src="shared.js"></script>
+    <script>
+        function selectMeterType(type) {
+            ['new', 'replace', 'move', 'remove'].forEach(t => {
+                document.getElementById('meter-type-' + t).classList.remove('selected');
+            });
+            document.getElementById('meter-type-' + type).classList.add('selected');
+        }
+    </script>
+</body>
+</html>

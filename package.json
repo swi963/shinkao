@@ -1,0 +1,19 @@
+{
+  "name": "shinkao-portal",
+  "private": true,
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "BROWSERSLIST_IGNORE_OLD_DATA=1 tailwindcss -c tailwind.config.js -i ./src/tailwind.css -o ./assets/tailwind.css --minify",
+    "dev": "BROWSERSLIST_IGNORE_OLD_DATA=1 tailwindcss -c tailwind.config.js -i ./src/tailwind.css -o ./assets/tailwind.css --watch",
+    "serve": "npx http-server . -p 3000 -c-1 --cors -o"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.5.0",
+    "browserslist": "^4.28.2",
+    "caniuse-lite": "^1.0.30001791",
+    "tailwindcss": "^3.4.17"
+  }
+}
