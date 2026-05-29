@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>欣高瓦斯 - 官方服務門戶</title>
+    <title>欣興瓦斯 - 官方服務門戶</title>
     <script>(function(){var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark');})()</script>
     <link rel="stylesheet" href="./assets/tailwind.css">
     <script src="https://cdn.jsdelivr.net/npm/lucide@1.14.0/dist/umd/lucide.min.js"></script>
@@ -256,7 +256,7 @@
             </button>
             <!-- Logo -->
             <button onclick="navigateTo('home')" id="page-title" class="shrink-0" aria-label="回到首頁">
-                <img id="header-logo" src="./assets/logo_name.png" data-light-src="./assets/logo_name.png" data-dark-src="./assets/logo_name_dark.png" alt="欣高瓦斯" class="h-8 sm:h-10 w-auto object-contain" />
+                <img id="header-logo" src="./assets/logo_name.png" data-light-src="./assets/logo_name.png" data-dark-src="./assets/logo_name_dark.png" alt="欣興瓦斯" class="h-8 sm:h-10 w-auto object-contain" />
             </button>
             <!-- 桌機導覽列 -->
             <nav class="hidden lg:flex items-center gap-1 ml-4">
@@ -320,7 +320,7 @@
                             <!-- Badge -->
                             <div class="inline-flex items-center px-3 py-1 rounded-full border text-sm font-medium" style="background-color:#EFF6FF; border-color:#BFDBFE; color:#2563EB;">智慧功能</div>
                             <!-- Heading -->
-                            <h1 class="text-[2rem] md:text-[2.5rem] lg:text-[3rem] xl:text-[54px] font-bold text-slate-900 leading-[1.2] tracking-tight">欣高瓦斯–守護您家中的每一度溫暖</h1>
+                            <h1 class="text-[2rem] md:text-[2.5rem] lg:text-[3rem] xl:text-[54px] font-bold text-slate-900 leading-[1.2] tracking-tight">欣興瓦斯–守護您家中的每一度溫暖</h1>
                             <!-- Subtitle -->
                             <p class="text-lg lg:text-xl text-slate-500">安心、便捷、環保的天然氣服務</p>
                             <!-- Action Buttons -->
@@ -338,7 +338,7 @@
                             <picture>
                             <source media="(max-width: 1023px)" srcset="./assets/home_banner_s.png">
                             <img src="./assets/home_banner.png"
-                                 alt="欣高瓦斯用戶服務"
+                                 alt="欣興瓦斯用戶服務"
                                  class="w-full h-full object-contain object-center">
                             </picture>
                     </div>
@@ -758,8 +758,8 @@
                 <!-- 公司資訊 -->
                 <div class="space-y-3">
                     <div class="flex items-center gap-2 mb-4">
-                        <img src="./assets/logo.png" alt="欣高瓦斯 Logo" class="w-10 h-10 object-contain" />
-                        <span class="text-white font-semibold text-lg">欣高石油氣股份有限公司</span>
+                        <img src="./assets/logo.png" alt="欣興瓦斯 Logo" class="w-10 h-10 object-contain" />
+                        <span class="text-white font-semibold text-lg">欣興石油氣股份有限公司</span>
                     </div>
                     <p class="text-sm text-slate-400 leading-relaxed flex items-start gap-2">
                         <i data-lucide="map-pin" class="w-4 h-4 text-slate-500 shrink-0 mt-0.5"></i>
@@ -810,7 +810,7 @@
             <!-- 版權列 -->
             <div class="border-t border-slate-700 px-8 py-4">
                 <p class="text-center text-slate-500 text-sm font-normal">
-                    &copy; 2026 SHIN-KAO Gas Co., LTD. All Rights Reserved.　|　欣高石油氣股份有限公司 版權所有 (DEMO Only)
+                    &copy; 2026 SHIN-KAO Gas Co., LTD. All Rights Reserved.　|　欣興石油氣股份有限公司 版權所有 (DEMO Only)
                 </p>
             </div>
         </footer>
@@ -946,7 +946,7 @@
             const targetPage = document.getElementById(`page-${id}`);
             if (targetPage) targetPage.classList.remove('hidden');
             // page-title now uses logo_name.png image, no text override needed
-            document.title = `${PAGE_TITLES[id] || '服務助手'} - 欣高瓦斯`;
+            document.title = `${PAGE_TITLES[id] || '服務助手'} - 欣興瓦斯`;
             syncTopTabUI(topTab);
             document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.page === id));
             const sidebar = document.getElementById('sidebar');
